@@ -1,7 +1,7 @@
 import streamlit as st
 import google.generativeai as genai
 
-# Direct Key setup for quick fix
+# Direct Key setup
 GEMINI_KEY = "AIzaSyDPpONsYV2lTJw35wr8ZyHewj6p72-LYq4"
 genai.configure(api_key=GEMINI_KEY)
 
@@ -16,9 +16,8 @@ with tab1:
     if st.button("Ask Expert"):
         if query:
             try:
-                # Correct way to call the model
-                model = genai.GenerativeModel('gemini-pro')
-
+                # Force using v1 version to avoid 404 error
+                model = genai.GenerativeModel(model_name='gemini-1.5-flash')
                 res = model.generate_content(f"Act as a professional civil engineer. Answer in English and Tamil: {query}")
                 st.success(res.text)
             except Exception as e:
@@ -26,10 +25,10 @@ with tab1:
 
 with tab2:
     st.header("Elevation & 3D Design")
-    prompt = st.text_area("Ex: Modern house with wood and glass exterior, 2 floors")
+    # Cleaned up prompt handling
+    design_prompt = st.text_area("Ex: Modern house design, 2 floors")
     if st.button("Generate Design"):
-        if prompt:
-            # Image generation (Always works independently)
-            image_url = f"https://image.pollinations.ai/prompt/{prompt.replace(' ', '%20')}?width=1024&height=1024&seed=42&nologo=true"
+        if design_prompt:
+            encoded_prompt = design_prompt.replace(" ", "%20")
+            image_url = f"https://image.pollinations.ai/prompt/{encoded_prompt}"
             st.image(image_url, caption="Your Generated Design")
-
