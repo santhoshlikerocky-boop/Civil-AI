@@ -17,7 +17,7 @@ with tab1:
         if query:
             try:
                 # Correct way to call the model
-                model = genai.GenerativeModel('gemini-1.5-flash-latest')
+                model = genai.GenerativeModel('gemini-pro')
 
                 res = model.generate_content(f"Act as a professional civil engineer. Answer in English and Tamil: {query}")
                 st.success(res.text)
